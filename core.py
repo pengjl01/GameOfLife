@@ -58,7 +58,13 @@ class Core:
         else:
           if num==3:
             self.__next_state[r][c]=True
+          else:
+            self.__next_state[r][c]=False
     self.__now_state,self.__next_state=self.__next_state,self.__now_state
+    return self.__now_state
+  
+  #获取当前状态
+  def get_now_state(self):
     return self.__now_state
   
   #将当前时刻所有细胞设置为死亡
