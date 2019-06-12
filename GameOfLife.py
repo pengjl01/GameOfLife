@@ -24,6 +24,17 @@ def draw():
   draw_buttom()
   draw_data()
   pygame.display.flip()
+def click_block(mouse_x,mouse_y):
+  r=int(mouse_y/(block_size+1))
+  c=int(mouse_x/(block_size+1))
+  print("clicked "+str(r)+" "+str(c)+" "+str(data[r][c]))
+  if data[r][c]==0:
+    data[r][c]=1
+  else:
+    data[r][c]=0
+#  draw()
+  draw_block(r,c,data[r][c])
+  pygame.display.flip()
 def run_game():
   global bg_color
   global screen
@@ -31,8 +42,11 @@ def run_game():
   global block_size
   global block_dead_color
   global block_life_color
+#  global block_area
+  r=160
+  c=240
   block_size=4
-  data= [[0 for x in range(240)] for i in range(160)]
+  data= [[0 for x in range(c)] for i in range(r)]
   data[100][100]=1
   data[100][101]=1
   data[100][102]=1
@@ -51,7 +65,7 @@ def run_game():
               sys.exit() #退出程序
           elif event.type==pygame.MOUSEBUTTONDOWN:#检测鼠标点击事件
                 mouse_x,mouse_y=pygame.mouse.get_pos() #get_pos()返回一个单击时鼠标的xy坐标
-                check_play(button_go,sta,mouse_x,mouse_y)
+                click_block(mouse_x,mouse_y)
           draw()
 if __name__ == '__main__':
   run_game() 
