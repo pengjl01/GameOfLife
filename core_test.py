@@ -7,34 +7,62 @@ Created on Wed Jun 12 14:54:09 2019
 
 import unittest
 
-from core import get_live_num
-from core import next_state
+from core import Core
+
 
 class TestCore(unittest.TestCase):
- 
+  
+  def test_init(self):
+    core=Core(3,4)#构造函数应该为core创建2个相同规格的数组
+    self.assertEqual(len(core._Core__now_state),3)
+    self.assertEqual(len(core._Core__now_state[0]),4)
+    self.assertEqual(len(core._Core__next_state),3)
+    self.assertEqual(len(core._Core__next_state[0]),4)
+    
+  def test_change_block(self):
+    core=Core(2,2)
+    core.change_block(0,0)
+    core.change_block(1,1)
+    self.assertTrue(core._Core__now_state[0][0])#反转后的值应该为True
+    self.assertTrue(core._Core__now_state[1][1])
+    core.change_block(1,1)
+    self.assertFalse(core._Core__now_state[1][1])#2次反转后的值应该为False
+    self.assertFalse(core._Core__next_state[0][0])#_Core__next_state不应该受到影响
+    core.change_block(3,1)
+    
   def test_get_live_num(self): 
-    pre=[[0,0,0],[1,1,1],[0,0,0]]
-    self.assertEqual(get_live_num(0,0,pre),2)
-    self.assertEqual(get_live_num(0,1,pre),3)
-    self.assertEqual(get_live_num(0,2,pre),2)
-    self.assertEqual(get_live_num(1,0,pre),1)
-    self.assertEqual(get_live_num(1,1,pre),2)
-    self.assertEqual(get_live_num(1,2,pre),1)
-    self.assertEqual(get_live_num(2,0,pre),2)
-    self.assertEqual(get_live_num(2,1,pre),3)
-    self.assertEqual(get_live_num(2,2,pre),2)
-  def test_next_state(self):
-    pre = [[0 for x in range(5)] for i in range(5)]
-    pre[2][1] = 1
-    pre[2][2] = 1
-    pre[2][3] = 1
-    after =[[0 for x in range(5)] for i in range(5)]
+    core=Core(3,3)
+    core.change_block(0,1)
+    core.change_block(1,0)
+    core.change_block(1,1)
+    self.assertEqual(core._Core__get_live_num(0,0),3)
+    self.assertEqual(core._Core__get_live_num(0,1),2)
+    self.assertEqual(core._Core__get_live_num(0,2),2)
+    self.assertEqual(core._Core__get_live_num(1,0),2)
+    self.assertEqual(core._Core__get_live_num(1,1),2)
+    self.assertEqual(core._Core__get_live_num(1,2),2)
+    self.assertEqual(core._Core__get_live_num(2,0),2)
+    self.assertEqual(core._Core__get_live_num(2,1),2)
+    self.assertEqual(core._Core__get_live_num(2,2),1)
+    
+  def test_clear(self):
+    core=Core(2,2)
+    core.change_block(0,1)
+    core.change_block(1,0)
+    core.clear()
+    ans =[[0 for x in range(2)] for i in range(2)]
+    self.assertEqual(core._Core__now_state,ans)#清空测试
+    
+  def test__Core__next_state(self):
     ans =[[0 for x in range(5)] for i in range(5)]
     ans[1][2] = 1
     ans[2][2] = 1
     ans[3][2] = 1
-    next_state(pre,after)
-    self.assertEqual(ans,after)
+    core=Core(5,5)
+    core.change_block(2,1)
+    core.change_block(2,2)
+    core.change_block(2,3)
+    self.assertEqual(core.get_next_state(),ans)#信号灯测试
     
 if __name__ == '__main__':
     unittest.main()
