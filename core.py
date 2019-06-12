@@ -79,9 +79,7 @@ if __name__ =='__main__':
   after =[[0 for x in range(5)] for i in range(5)]
   for i in range(10):
     next_state(pre,after)
-    temp=pre
-    screen=after
-    after=temp
-    for i in range(len(screen)):
-      print(screen[i])
+    pre,after= after,pre
+    for i in range(len(pre)):
+      print(pre[i])
     print('\n')
