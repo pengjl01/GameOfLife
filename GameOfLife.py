@@ -10,6 +10,7 @@ import pygame
 from core import Core
 from blocks import Blocks
 from button import Button
+import time
 
 #r=160
 #c=240
@@ -35,6 +36,8 @@ class GameOfLife:
     self.next_button.draw_button()
     self.start_button.draw_button()
     self.stop_button.draw_button()
+    self.time=time.time()
+    self.speed=1
     pygame.display.flip()
   def click_block(self,mouse_x,mouse_y):
     r=int(mouse_y/(block_size+1))
@@ -49,22 +52,26 @@ class GameOfLife:
       self.running=True
     if self.stop_button.rect.collidepoint(mouse_x,mouse_y):
       self.running=False
-
   def draw(self):
     self.blocks.draw_board()
     pygame.display.flip()
   def run_game(self):
     while True:
-        for event in pygame.event.get():  #检测键盘鼠标事件
-            if event.type==pygame.QUIT:
-                sys.exit() #退出程序
-            elif event.type==pygame.MOUSEBUTTONDOWN:#检测鼠标点击事件
-                  mouse_x,mouse_y=pygame.mouse.get_pos() #get_pos()返回一个单击时鼠标的xy坐标
-                  if(mouse_x<self.blocks_right):
-                    self.click_block(mouse_x,mouse_y)
-                  else:
-                    self.click_button(mouse_x,mouse_y)
-            self.draw()
+      for event in pygame.event.get():  #检测键盘鼠标事件
+        if event.type==pygame.QUIT:
+          sys.exit() #退出程序
+        elif event.type==pygame.MOUSEBUTTONDOWN:#检测鼠标点击事件
+          mouse_x,mouse_y=pygame.mouse.get_pos() #get_pos()返回一个单击时鼠标的xy坐标
+          if(mouse_x<self.blocks_right):
+            self.click_block(mouse_x,mouse_y)
+          else:
+            self.click_button(mouse_x,mouse_y)
+      if self.running:
+        nowtime=time.time()
+        if nowtime-self.time>(1/self.speed):
+          self.time=nowtime
+          self.blocks.set_status(self.core.get_next_state())
+      self.draw()
 if __name__ == '__main__':
   gol=GameOfLife()
   gol.run_game()

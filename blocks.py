@@ -18,6 +18,7 @@ class Blocks():
     for i in range(len(self.blocks)):
       for j in range(len(self.blocks[0])):
         self.blocks[i][j]=Block(i,j,block_size,screen)
+        
   def draw_board(self):
     for i in range(len(self.blocks)):
       for j in range(len(self.blocks[0])):
