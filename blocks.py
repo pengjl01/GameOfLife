@@ -12,22 +12,23 @@ life_color=(102,204,255)
 dead_color=(0,0,0)
 
 class Blocks():
-  def __init__(self,r,c,block_size,screen):
+  def __init__(self,r,c,block_size,screen,states):
     self.block_size=block_size
     self.blocks=[[0]*c for i in range(r)]
     for i in range(len(self.blocks)):
       for j in range(len(self.blocks[0])):
         self.blocks[i][j]=Block(i,j,block_size,screen)
+    self.set_status(states)
         
   def draw_board(self):
     for i in range(len(self.blocks)):
       for j in range(len(self.blocks[0])):
         self.blocks[i][j].draw_block()
       
-  def set_status(self,status):
+  def set_status(self,states):
     for i in range(len(self.blocks)):
       for j in range(len(self.blocks[0])):
-        self.blocks[i][j].set_alive(status[i][j])
+        self.blocks[i][j].set_alive(states[i][j])
   
   def click(self,r,c):
     self.blocks[r][c].click_on()
@@ -49,4 +50,3 @@ class Block():
     
   def click_on(self):
     self.alive^=1
-    self.draw_block()

@@ -8,7 +8,7 @@ Created on Wed Jun 12 14:54:09 2019
 import unittest
 
 from core import Core
-
+import rle
 
 class TestCore(unittest.TestCase):
   
@@ -55,14 +55,28 @@ class TestCore(unittest.TestCase):
     
   def test__Core__next_state(self):
     ans =[[0 for x in range(5)] for i in range(5)]
-    ans[1][2] = 1
-    ans[2][2] = 1
-    ans[3][2] = 1
+    ans[1][2] = True
+    ans[2][2] = True
+    ans[3][2] = True
     core=Core(5,5)
     core.change_block(2,1)
     core.change_block(2,2)
     core.change_block(2,3)
     self.assertEqual(core.get_next_state(),ans)#信号灯测试
+  
+  def test_add_life(self):
+    ans =[[False for x in range(5)] for i in range(5)]
+    ans[1][3] = True
+    ans[2][1] = True
+    ans[2][3] = True
+    ans[3][2] = True
+    ans[3][3] = True
+    core=Core(5,5)
+    core.add_life(1,1,rle.glider)
+#    print(core.get_now_state())
+#    print(ans)
+    self.assertEqual(core.get_now_state(),ans)#glider添加测试
+    
     
 if __name__ == '__main__':
     unittest.main()

@@ -67,6 +67,15 @@ class Core:
   def get_now_state(self):
     return self.__now_state
   
+  #增加生命
+  def add_life(self,r,c,data):
+    if r+len(data)<=len(self.__now_state)and c+len(data[0])<=len(self.__now_state[0]):
+      for i in range(len(data)):
+        for j in range(len(data[0])):
+          self.__now_state[r+i][c+j]=data[i][j]
+#      self.__now_state[r:r+len(data)][c:c+len(data[0])] = data[:]
+#      print(self.__now_state[r:r+len(data)][c:c+len(data[0])])
+      
   #将当前时刻所有细胞设置为死亡
   def clear(self):
     for r in range(len(self.__now_state)):

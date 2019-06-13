@@ -11,7 +11,7 @@ from core import Core
 from blocks import Blocks
 from button import Button
 import time
-
+import rle
 #设置行数/列数/块大小
 #r=160
 #c=240
@@ -30,14 +30,22 @@ class GameOfLife:
     self.screen=pygame.display.set_mode((self.blocks_right+100,height))
     pygame.display.set_caption("Game Of Life")  #设置标题
     self.screen.fill(bg_color)
-    self.blocks=Blocks(r,c,block_size,self.screen)
-    self.blocks.draw_board()
     self.core=Core(r,c)
+    self.__init_lives()
+    self.blocks=Blocks(r,c,block_size,self.screen,self.core.get_now_state())
+    self.blocks.draw_board()
     self.running=False
     self.time=time.time()
     self.__add_buttons()
     self.speed=1
+    
     return
+  #添加初始生命
+  def __init_lives(self):
+    self.core.add_life(1,1,rle.glider)
+    self.core.add_life(15,10,rle.blinker)
+    self.core.add_life(20,10,rle.toad)
+    self.core.add_life(30,40,rle.HWSS)
   #添加按键
   def __add_buttons(self):
     self.next_button=Button(self.blocks_right+10,20,self.screen,'next')
