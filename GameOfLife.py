@@ -12,6 +12,7 @@ from blocks import Blocks
 from button import Button
 import time
 
+#设置行数/列数/块大小
 #r=160
 #c=240
 #block_size=5
@@ -22,29 +23,40 @@ bg_color=(230,230,230)
 class GameOfLife:
   def __init__(self):
     pygame.init()  #初始化背景设置
-    self.blocks_right=c*(block_size+1)
-    self.screen=pygame.display.set_mode((self.blocks_right+100,r*(block_size+1)))
+    self.blocks_right=c*(block_size+1)#计算方格区右边界
+    height=r*(block_size+1)
+    if height<300:
+      height=300 #保证按键显示完全
+    self.screen=pygame.display.set_mode((self.blocks_right+100,height))
     pygame.display.set_caption("Game Of Life")  #设置标题
     self.screen.fill(bg_color)
     self.blocks=Blocks(r,c,block_size,self.screen)
     self.blocks.draw_board()
     self.core=Core(r,c)
+    self.running=False
+    self.time=time.time()
+    self.__add_buttons()
+    self.speed=1
+    return
+  #添加按键
+  def __add_buttons(self):
     self.next_button=Button(self.blocks_right+10,20,self.screen,'next')
     self.start_button=Button(self.blocks_right+10,80,self.screen,'start')
     self.stop_button=Button(self.blocks_right+10,140,self.screen,'stop')
-    self.running=False
+    self.speed_up_button=Button(self.blocks_right+10,200,self.screen,'speed up')
+    self.speed_down_button=Button(self.blocks_right+10,260,self.screen,'speed down')
     self.next_button.draw_button()
     self.start_button.draw_button()
     self.stop_button.draw_button()
-    self.time=time.time()
-    self.speed=1
-    pygame.display.flip()
+    self.speed_up_button.draw_button()
+    self.speed_down_button.draw_button()
+  #点击方格区
   def click_block(self,mouse_x,mouse_y):
     r=int(mouse_y/(block_size+1))
     c=int(mouse_x/(block_size+1))
     self.core.change_block(r,c)
     self.blocks.click(r,c)
-    pygame.display.flip()
+  #点击按键区
   def click_button(self,mouse_x,mouse_y):
     if self.next_button.rect.collidepoint(mouse_x,mouse_y):
       self.blocks.set_status(self.core.get_next_state())
@@ -52,9 +64,18 @@ class GameOfLife:
       self.running=True
     if self.stop_button.rect.collidepoint(mouse_x,mouse_y):
       self.running=False
+    if self.speed_up_button.rect.collidepoint(mouse_x,mouse_y):
+      if self.speed<20:
+        self.speed+=1
+    if self.speed_down_button.rect.collidepoint(mouse_x,mouse_y):
+      if self.speed>1:
+        self.speed-=1
+    return
+  #添加按键
   def draw(self):
     self.blocks.draw_board()
     pygame.display.flip()
+  #运行游戏
   def run_game(self):
     while True:
       for event in pygame.event.get():  #检测键盘鼠标事件
