@@ -73,8 +73,6 @@ class TestCore(unittest.TestCase):
     ans[3][3] = True
     core=Core(5,5)
     core.add_life(1,1,rle.glider)
-#    print(core.get_now_state())
-#    print(ans)
     self.assertEqual(core.get_now_state(),ans)#glider添加测试
     
     

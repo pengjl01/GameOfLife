@@ -13,12 +13,12 @@ from button import Button
 import time
 import rle
 #设置行数/列数/块大小
-#r=160
-#c=240
-#block_size=5
-r=40
-c=70
-block_size=20
+r=80
+c=120
+block_size=10
+#r=40
+#c=70
+#block_size=20
 bg_color=(230,230,230)
 class GameOfLife:
   def __init__(self):
@@ -45,7 +45,9 @@ class GameOfLife:
     self.core.add_life(1,1,rle.glider)
     self.core.add_life(15,10,rle.blinker)
     self.core.add_life(20,10,rle.toad)
-    self.core.add_life(30,40,rle.HWSS)
+    self.core.add_life(10,80,rle.HWSS)
+    self.core.add_life(30,0,rle.glider_generater)
+    self.core.add_life(30,40,rle.glider_generater)
   #添加按键
   def __add_buttons(self):
     self.next_button=Button(self.blocks_right+10,20,self.screen,'next')
