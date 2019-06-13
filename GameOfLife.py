@@ -19,7 +19,8 @@ block_size=10
 #r=40
 #c=70
 #block_size=20
-bg_color=(230,230,230)
+#bg_color=(230,230,230)
+bg_color=(91,91,91)
 class GameOfLife:
   def __init__(self):
     pygame.init()  #初始化背景设置

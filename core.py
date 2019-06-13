@@ -19,31 +19,83 @@ class Core:
   #获取第r行c列细胞周围存活细胞的个数
   def __get_live_num(self,r, c):
     sum=0
-    try:
-      sum+=self.__now_state[r-1][c-1]
-    except IndexError:pass
-    try:
-      sum+=self.__now_state[r-1][c]
-    except IndexError:pass
-    try:
-      sum+=self.__now_state[r-1][c+1]
-    except IndexError:pass
-    try:
+    if r == 0 and c == 0:
+      sum += self.__now_state[r][c+1]
+      sum+= self.__now_state[r+1][c]
+      sum +=self.__now_state[r+1][c+1]
+    elif r == 0 and c == len(self.__now_state[0]) - 1:
       sum+=self.__now_state[r][c-1]
-    except IndexError:pass
-    try:
-      sum+=self.__now_state[r][c+1]
-    except IndexError:pass
-    try:
       sum+=self.__now_state[r+1][c-1]
-    except IndexError:pass
-    try:
       sum+=self.__now_state[r+1][c]
-    except IndexError:pass
-    try:
+    elif r==len(self.__now_state)-1 and c==0:
+      sum+=self.__now_state[r-1][c]
+      sum+=self.__now_state[r-1][c+1]
+      sum+=self.__now_state[r][c+1]
+    elif r==len(self.__now_state)-1 and c==len(self.__now_state[0])-1:
+      sum+=self.__now_state[r-1][c-1]
+      sum+=self.__now_state[r-1][c]
+      sum+=self.__now_state[r][c-1]
+    elif r==0:
+      sum+=self.__now_state[r][c-1]
+      sum+=self.__now_state[r][c+1]
+      sum+=self.__now_state[r+1][c-1]
+      sum+=self.__now_state[r+1][c]
       sum+=self.__now_state[r+1][c+1]
-    except IndexError:pass
+    elif r==len(self.__now_state)-1:
+      sum+=self.__now_state[r-1][c-1]
+      sum+=self.__now_state[r-1][c]
+      sum+=self.__now_state[r-1][c+1]
+      sum+=self.__now_state[r][c-1]
+      sum+=self.__now_state[r][c+1]
+    elif c==0:
+      sum+=self.__now_state[r-1][c]
+      sum+=self.__now_state[r-1][c+1]
+      sum+=self.__now_state[r][c+1]
+      sum+=self.__now_state[r+1][c]
+      sum+=self.__now_state[r+1][c+1]
+    elif c==len(self.__now_state[0])-1:
+      sum+=self.__now_state[r-1][c-1]
+      sum+=self.__now_state[r-1][c]
+      sum+=self.__now_state[r][c-1]
+      sum+=self.__now_state[r+1][c-1]
+      sum+=self.__now_state[r+1][c]
+    else:
+      sum+=self.__now_state[r-1][c-1]
+      sum+=self.__now_state[r-1][c]
+      sum+=self.__now_state[r-1][c+1]
+      sum+=self.__now_state[r][c-1]
+      sum+=self.__now_state[r][c+1]
+      sum+=self.__now_state[r+1][c-1]
+      sum+=self.__now_state[r+1][c]
+      sum+=self.__now_state[r+1][c+1]
     return sum
+#浪脱了的代码
+#    sum=0
+#    try:
+#      sum+=self.__now_state[r-1][c-1]
+#    except IndexError:pass
+#    try:
+#      sum+=self.__now_state[r-1][c]
+#    except IndexError:pass
+#    try:
+#      sum+=self.__now_state[r-1][c+1]
+#    except IndexError:pass
+#    try:
+#      sum+=self.__now_state[r][c-1]
+#    except IndexError:pass
+#    try:
+#      sum+=self.__now_state[r][c+1]
+#    except IndexError:pass
+#    try:
+#      sum+=self.__now_state[r+1][c-1]
+#    except IndexError:pass
+#    try:
+#      sum+=self.__now_state[r+1][c]
+#    except IndexError:pass
+#    try:
+#      sum+=self.__now_state[r+1][c+1]
+#    except IndexError:pass
+#    return sum
   
   #获取下一个时刻所有细胞的存活状态
   def get_next_state(self):
